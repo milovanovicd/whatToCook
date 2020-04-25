@@ -1,0 +1,7 @@
+{
+  "name": "what-to-cook",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

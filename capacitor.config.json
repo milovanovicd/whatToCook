@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "what-to-cook",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}
