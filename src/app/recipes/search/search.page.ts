@@ -12,7 +12,7 @@ import { IonicSelectableComponent } from 'ionic-selectable';
 export class SearchPage implements OnInit,OnDestroy {
   recipes:Recipe[];
   recipesSub:Subscription;
-  selectedRecipe = null;
+  searchList:Recipe[];
   selected = [];
   toggle = true;
   @ViewChild('selectComponent',{ static: true }) selectComponent:IonicSelectableComponent;
@@ -22,6 +22,7 @@ export class SearchPage implements OnInit,OnDestroy {
   ngOnInit() {
     this.recipesSub = this.recipesService.recipes.subscribe(recipes=> {
       this.recipes = recipes;
+      this.searchList = [...this.recipes];
     });
   }
 
@@ -45,6 +46,23 @@ export class SearchPage implements OnInit,OnDestroy {
     this.selectComponent.confirm();
     console.log(this.selectComponent.itemsToConfirm);
     this.selectComponent.close();
-    
   }
+
+  initSearchList(){
+    this.searchList = [...this.recipes];
+  }
+
+  lookFor(event){
+    this.initSearchList();
+    
+    var searchTerm = event.detail.value;
+
+    if (searchTerm && searchTerm.trim() != '') {
+    this.searchList = this.searchList.filter((item) => {
+    return (item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
+  })
+}
+  }
+
+  
 }
