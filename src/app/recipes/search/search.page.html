@@ -1,9 +1,51 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>search</ion-title>
-  </ion-toolbar>
+    <ion-toolbar class="ion-text-center">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <!-- <ion-title>Search</ion-title> -->
+        <ion-searchbar color="light"></ion-searchbar>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <!-- <ion-item>
+        <ion-label>Select Recipe:</ion-label>
+        <ionic-selectable [(ngModel)]="selectedRecipe" [items]="recipes" itemValueField="id" itemTextField="title"></ionic-selectable>
+    </ion-item> -->
+    <ion-item>
+        <ion-label>Select Ingredients:</ion-label>
+        <ionic-selectable [(ngModel)]="selected" [items]="recipes" itemValueField="id" itemTextField="title" [isMultiple]="true" #selectComponent>
+            <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon slot="start" name="close-outline"></ion-icon>
+            </ng-template>
+
+            <ng-template ionicSelectableTitleTemplate>
+                Select Ingredients
+            </ng-template>
+
+            <ng-template ionicSelectableItemTemplate let-recipe="item">
+                {{recipe.title}} ({{recipe.cookingTime}}min)
+            </ng-template>
+
+            <ng-template ionicSelectableFooterTemplate>
+                <ion-footer>
+                    <ion-toolbar>
+                        <ion-row class="ion-text-center">
+                            <ion-col size="4">
+                                <ion-button (click)="onClear()" fill="clear">Clear</ion-button>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-button (click)="onToggleItems()" fill="clear">{{ toggle === true ? 'Select All' : 'Clear All' }}</ion-button>
+                            </ion-col>
+                            <ion-col size="4">
+                                <ion-button (click)="onConfirm()" fill="clear">Confirm</ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-toolbar>
+                </ion-footer>
+            </ng-template>
+        </ionic-selectable>
+    </ion-item>
 
 </ion-content>
