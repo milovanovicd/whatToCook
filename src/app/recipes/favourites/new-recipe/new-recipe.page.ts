@@ -3,6 +3,7 @@ import { NgForm } from "@angular/forms";
 import { RecipesService } from "../../recipes.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { IngredientsService } from '../../ingredients/ingredients.service';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: "app-new-recipe",
@@ -16,12 +17,36 @@ export class NewRecipePage implements OnInit {
   constructor(
     private recipesService: RecipesService,
     private authService: AuthService,
-    private ingredientsService:IngredientsService
+    private ingredientsService:IngredientsService,
+    private alertController:AlertController,
+    private navCtrl:NavController
   ) {}
 
   ngOnInit() {
     this.ingredients = this.ingredientsService.ingredients;
     console.log(this.ingredients);
+  }
+
+  async recipeCreatedAlert() {
+    const alert = await this.alertController.create({
+      header: 'New Recipe',
+      message: 'Recipe created successfully. Do you want to add more?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.form.reset();
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+            this.navCtrl.navigateBack("/recipes/tabs/favourites");
+          }
+        }]
+    });
+
+    await alert.present();
   }
 
   onAddNewRecipe() {
@@ -40,7 +65,7 @@ export class NewRecipePage implements OnInit {
       cookingTime,
       userId
     ).subscribe(() =>{
-      this.form.reset();
+      this.recipeCreatedAlert();
     });
 
   }

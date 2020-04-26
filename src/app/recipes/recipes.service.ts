@@ -59,7 +59,7 @@ export class RecipesService {
       false
     ),
   ]);
-  constructor() {}
+  constructor(){}
 
   //SELECT
   get recipes() {
@@ -87,6 +87,8 @@ export class RecipesService {
         }));
     }))
   }
+
+
 
   // CREATE
   addRecipe(
@@ -118,7 +120,24 @@ export class RecipesService {
   //     this._places.next(places.concat(newPlace));
   //     })))
   // }
+
   //UPDATE
+  updateRecipe(recipeId: string,
+    title: string,
+    description: string,
+    ingredients: string[],
+    cookingTime: number,){
+      return this.recipes.pipe(take(1),tap(recipes=>{
+        const updatedRecipeIndex = recipes.findIndex(r => r.id === recipeId);
+        console.log("index:"+updatedRecipeIndex);
+        const updatedRecipes = [...recipes];
+        const oldRecipe = updatedRecipes[updatedRecipeIndex];
+        updatedRecipes[updatedRecipeIndex] = new Recipe(oldRecipe.id,oldRecipe.userId,title,description,oldRecipe.imageUrl,ingredients,cookingTime,oldRecipe.isFavourite);
+        
+        this._recipes.next(updatedRecipes);
+      }))
+  }
+
   // updatePlace(placeId:string,title:string,description:string){
   //   return this.places.pipe(take(1),tap(places=>{
   //     const updatedPlaceIndex = places.findIndex(pl => pl.id === placeId);

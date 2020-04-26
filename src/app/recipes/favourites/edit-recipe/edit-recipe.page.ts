@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Recipe } from "../../recipe.model";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RecipesService } from "../../recipes.service";
 import { Subscription } from "rxjs";
-import { NavController } from "@ionic/angular";
+import { NavController, AlertController } from "@ionic/angular";
 import { IngredientsService } from '../../ingredients/ingredients.service';
 import {NgForm } from '@angular/forms';
 
@@ -22,7 +22,8 @@ export class EditRecipePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private recipeService: RecipesService,
-    private ingredientsService:IngredientsService
+    private ingredientsService:IngredientsService,
+    private alertController:AlertController
   ) {}
 
   ngOnInit() {
@@ -46,6 +47,23 @@ export class EditRecipePage implements OnInit, OnDestroy {
     }
   }
 
+  async recipeUpdatedAlert() {
+    const alert = await this.alertController.create({
+      header: 'Edit Recipe',
+      message: 'Recipe updated successfully!',
+      buttons: [
+      {
+        text: 'Okay',
+        handler: () => {
+          this.navCtrl.navigateBack("/recipes/tabs/favourites");
+        }
+      }]
+    });
+
+    await alert.present();
+  }
+
+
   isSelected(ingredient:string):boolean{
     if(this.recipe.ingredients.includes(ingredient)){
       return true;
@@ -54,6 +72,13 @@ export class EditRecipePage implements OnInit, OnDestroy {
   }
 
   onUpdateRecipe(){
-    console.log(this.form.value);
+    if(!this.form.valid){
+      return;
+    }
+    this.recipeService.updateRecipe(this.recipe.id,this.form.value.title,this.form.value.description,this.form.value.ingredients,this.form.value.cookingTime)
+    .subscribe(()=>{
+      this.recipeUpdatedAlert();
+    });
+    console.log();
   }
 }
