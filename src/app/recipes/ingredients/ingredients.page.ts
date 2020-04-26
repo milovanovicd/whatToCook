@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IngredientsService } from './ingredients.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ingredients.page.scss'],
 })
 export class IngredientsPage implements OnInit {
+  ingredients:string[];
 
-  constructor() { }
+  constructor(private ingredientsService:IngredientsService) { }
 
   ngOnInit() {
+    this.ingredients = this.ingredientsService.ingredients;
   }
 
 }

@@ -88,8 +88,6 @@ export class RecipesService {
     }))
   }
 
-
-
   // CREATE
   addRecipe(
     title: string,
@@ -113,13 +111,6 @@ export class RecipesService {
       this._recipes.next(recipes.concat(newRecipe));
     }))
   }
-  // addPlace(title:string, description:string,price:number,dateFrom:Date,dateTo:Date){
-  //   const newPlace = new Place(Math.random().toString(),title,description,'https://media.timeout.com/images/105304047/630/472/image.jpg',price,dateFrom,dateTo,this.authService.userId);
-  //   return this.places.pipe(take(1),delay(1000),tap(places =>
-  //     setTimeout(() => {
-  //     this._places.next(places.concat(newPlace));
-  //     })))
-  // }
 
   //UPDATE
   updateRecipe(recipeId: string,
@@ -137,15 +128,4 @@ export class RecipesService {
         this._recipes.next(updatedRecipes);
       }))
   }
-
-  // updatePlace(placeId:string,title:string,description:string){
-  //   return this.places.pipe(take(1),tap(places=>{
-  //     const updatedPlaceIndex = places.findIndex(pl => pl.id === placeId);
-  //     const updatedPlaces = [...places];
-  //     const oldPlace = updatedPlaces[updatedPlaceIndex];
-  //     updatedPlaces[updatedPlaceIndex] = new Place (oldPlace.id,title,description,oldPlace.imageUrl,oldPlace.price,oldPlace.availableFrom,oldPlace.availableTo,oldPlace.userId);
-
-  //     this._places.next(updatedPlaces);
-  //   }))
-  // }
 }
