@@ -1,0 +1,18 @@
+<ion-header>
+    <ion-toolbar class="ion-text-center">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Recipes</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12" size-sm="6" offset-sm="3" *ngFor="let recipe of loadedRecipes">
+                <app-recipe-item [recipe]="recipe"></app-recipe-item>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

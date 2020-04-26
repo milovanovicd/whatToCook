@@ -1,0 +1,29 @@
+<ion-card>
+    <ion-img [src]="recipe.imageUrl"></ion-img>
+    <ion-card-header class="ion-text-center">
+        <ion-card-title>{{recipe.title}}</ion-card-title>
+        <div class="recipe-details ion-padding">
+            <div>
+                <ion-icon slot="start" name="alarm-outline"></ion-icon>
+                <ion-label>
+                    Ingredients: {{recipe.ingredients.length}}
+                </ion-label>
+            </div>
+            <div>
+                <ion-icon slot="start" name="alarm-outline"></ion-icon>
+                <ion-label>
+                    Cooking time: {{recipe.cookingTime}}
+                </ion-label>
+            </div>
+        </div>
+    </ion-card-header>
+    <ion-card-content>
+        {{recipe.description}}
+    </ion-card-content>
+    <div class="ion-text-center">
+        <ion-button [routerLink]="['/','recipes','tabs','recipes-list',recipe.id]" class="ion-text-center" fill="clear" shape="round" class="ion-margin-vertical">
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+            See details
+        </ion-button>
+    </div>
+</ion-card>
