@@ -1,15 +1,35 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Recipe } from '../../recipe.model';
+import { RecipesService } from '../../recipes.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-item',
   templateUrl: './recipe-item.component.html',
   styleUrls: ['./recipe-item.component.scss'],
 })
-export class RecipeItemComponent implements OnInit {
+export class RecipeItemComponent implements OnInit,OnDestroy {
   @Input() recipe:Recipe;
-  constructor() { }
+  favSub:Subscription;
+  unfavSub:Subscription;
+  constructor(private recipeService:RecipesService) {}
 
   ngOnInit() {}
 
+  ngOnDestroy(){
+    if(this.favSub){
+      this.favSub.unsubscribe();
+    }
+    if(this.unfavSub){
+      this.unfavSub.unsubscribe();
+    }
+  }
+
+  removeFromFavourites(recipeId:string){
+    this.unfavSub = this.recipeService.removeFromFavourites(recipeId).subscribe();
+  }
+
+  addToFavourites(recipeId:string){
+    this.favSub = this.recipeService.addToFavourites(recipeId).subscribe();
+  }
 }
