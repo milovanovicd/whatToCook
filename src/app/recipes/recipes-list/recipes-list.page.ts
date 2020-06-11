@@ -11,6 +11,7 @@ import { RecipesService } from '../recipes.service';
 export class RecipesListPage implements OnInit,OnDestroy{
   loadedRecipes: Recipe[];
   recipesSub: Subscription;
+  isLoading = false;
   
   constructor(private recipesService: RecipesService) {}
 
@@ -19,6 +20,14 @@ export class RecipesListPage implements OnInit,OnDestroy{
       this.loadedRecipes = recipes;
     });
   }
+
+  ionViewWillEnter(){
+    this.isLoading = true;
+    this.recipesService.fetchRecipes().subscribe(()=>{
+      this.isLoading = false;
+    });
+  }
+
   ngOnDestroy() {
     if (this.recipesSub) {
       this.recipesSub.unsubscribe();

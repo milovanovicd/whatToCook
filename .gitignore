@@ -29,3 +29,5 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/what-to-cook-backend/node_modules
+/what-to-cook-backend/dist

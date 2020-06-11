@@ -1,7 +1,7 @@
 <ion-grid fixed>
     <ion-row>
         <ion-col size="12">
-            <ion-list>
+            <ion-list *ngIf="!isLoading">
                 <ion-item *ngFor="let f of favouriteRecipes" [routerLink]="['/','recipes','tabs','recipes-list',f.id]">
                     <ion-thumbnail slot="start">
                         <ion-img [src]="f.imageUrl"></ion-img>
