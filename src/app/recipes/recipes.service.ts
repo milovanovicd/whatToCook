@@ -3,7 +3,7 @@ import { Recipe } from "./recipe.model";
 import { BehaviorSubject, of } from "rxjs";
 import { take, map, tap, switchMap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-import { AuthService } from '../auth/auth.service';
+import { UserService } from '../auth/user/user.service';
 
 @Injectable({
   providedIn: "root",
@@ -13,7 +13,7 @@ export class RecipesService {
   private _myRecipes = new BehaviorSubject<Recipe[]>([]);
   private _favouriteRecipes = new BehaviorSubject<Recipe[]>([]);
 
-  constructor(private http: HttpClient, private authService:AuthService) {}
+  constructor(private http: HttpClient, private userService:UserService) {}
 
   //SELECT
   get recipes() {
@@ -38,7 +38,7 @@ export class RecipesService {
       take(1),
       tap((recipes) => {
         const myRecipes = recipes.filter(r =>{
-          return r.userId === this.authService.userId;
+          return r.userId === this.userService.userId;
         })
         this._myRecipes.next(myRecipes);
       })

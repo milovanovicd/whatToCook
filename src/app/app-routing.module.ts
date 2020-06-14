@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: "recipes",
     loadChildren: () => import("./recipes/recipes.module").then((m) => m.RecipesPageModule),
-    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 
 ];

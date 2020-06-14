@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthPage implements OnInit {
   isLoading = false;
+ 
   isLogin = true;
 
   constructor(
@@ -27,45 +28,45 @@ export class AuthPage implements OnInit {
     this.isLogin=!this.isLogin;
   }
 
-  authenticate( email:string,password:string){
-    this.isLoading=true;
-    this.loadingCtrl.create({
-      keyboardClose:true,
-      message:'Logging in...'
-    }).then(loadingEl => {
-      loadingEl.present();
-      //Koristimo za postavljanje odgovarajuce observable - signup / login
-      let authObs:Observable<{token:string}>;
+  // authenticate( email:string,password:string){
+  //   this.isLoading=true;
+  //   this.loadingCtrl.create({
+  //     keyboardClose:true,
+  //     message:'Logging in...'
+  //   }).then(loadingEl => {
+  //     loadingEl.present();
+  //     //Koristimo za postavljanje odgovarajuce observable - signup / login
+  //     let authObs:Observable<{token:string}>;
       
-      //Login ili Signup
-      if(this.isLogin){
-        // authObs = this.authService.login(email,password);
-      }else {
-        // authObs = this.authService.signup(email,password);
-      }
+  //     //Login ili Signup
+  //     if(this.isLogin){
+  //       // authObs = this.authService.login(email,password);
+  //     }else {
+  //       // authObs = this.authService.signup(email,password);
+  //     }
 
-      authObs.subscribe(resData =>{
-        console.log(resData);
-        //Logika
-        this.isLoading = false;
-        loadingEl.dismiss();
-        this.router.navigateByUrl('/places/tabs/discover');
-      }, errRes =>{
-          loadingEl.dismiss();
-          /*
-          const code = errRes.error.error.message;
-          let message = 'Could not sign you up, please try again';
+  //     authObs.subscribe(resData =>{
+  //       console.log(resData);
+  //       //Logika
+  //       this.isLoading = false;
+  //       loadingEl.dismiss();
+  //       this.router.navigateByUrl('/places/tabs/discover');
+  //     }, errRes =>{
+  //         loadingEl.dismiss();
+  //         /*
+  //         const code = errRes.error.error.message;
+  //         let message = 'Could not sign you up, please try again';
 
-          if(code === 'EMAIL_EXISTS'){
-            message = 'This email exists!';
-          }
+  //         if(code === 'EMAIL_EXISTS'){
+  //           message = 'This email exists!';
+  //         }
 
-          this.showAlert(message);
-          */
-      })
-    });
+  //         this.showAlert(message);
+  //         */
+  //     })
+  //   });
 
-  }
+  // }
 
   onSubmit(form:NgForm){
     if(!form.valid){
@@ -76,7 +77,11 @@ export class AuthPage implements OnInit {
 
     console.log(email,password);
 
-    this.authenticate(email,password);
+    if(this.isLogin){
+      this.authService.login(email,password);
+    }else{
+      this.authService.signup(email,password);
+    }
   }
 
   private showAlert(message:string){

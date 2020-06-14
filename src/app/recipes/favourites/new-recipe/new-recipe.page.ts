@@ -5,12 +5,12 @@ import {
   OnDestroy,
   ElementRef,
 } from "@angular/core";
-import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
+import {FormGroup, FormControl, Validators } from "@angular/forms";
 import { RecipesService } from "../../recipes.service";
-import { AuthService } from "src/app/auth/auth.service";
 import { IngredientsService } from "../../ingredients/ingredients.service";
 import { AlertController, NavController, Platform } from "@ionic/angular";
 import { Subscription } from "rxjs";
+import { UserService } from 'src/app/auth/user/user.service';
 
 //Funkcija za konvertovanje stringa u fajl
 function base64toBlob(base64Data, contentType) {
@@ -48,7 +48,7 @@ export class NewRecipePage implements OnInit, OnDestroy {
 
   constructor(
     private recipesService: RecipesService,
-    private authService: AuthService,
+    private userService: UserService,
     private ingredientsService: IngredientsService,
     private alertController: AlertController,
     private navCtrl: NavController
@@ -123,7 +123,7 @@ export class NewRecipePage implements OnInit, OnDestroy {
     const image = this.form.value.image;
     // const image = "https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg";
     const cookingTime = this.form.value.cookingTime;
-    const userId = this.authService.userId;
+    const userId = this.userService.userId;
     this.recipesService
       .addRecipe(title, description, image, ingredients, cookingTime, userId)
       .subscribe(() => {

@@ -4,6 +4,7 @@ import { RecipesService } from '../recipes.service';
 import { Recipe } from '../recipe.model';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { UserService } from 'src/app/auth/user/user.service';
 
 @Component({
   selector: 'app-favourites',
@@ -17,7 +18,7 @@ export class FavouritesPage implements OnInit,OnDestroy {
   myRecipes:Recipe[];
   recipeSub:Subscription;
 
-  constructor(private recipesService:RecipesService, private authService:AuthService) { }
+  constructor(private recipesService:RecipesService, private userService:UserService) { }
 
   ngOnInit() {
     this.recipeSub = this.recipesService.recipes.subscribe(recipes =>{
@@ -25,7 +26,7 @@ export class FavouritesPage implements OnInit,OnDestroy {
         return r.isFavourite ===true;
       });
       this.myRecipes = recipes.filter(r=>{
-        return r.userId === this.authService.userId;
+        return r.userId === this.userService.userId;
         // return r.userId === this.authService.userId.subscribe();
       })
     })

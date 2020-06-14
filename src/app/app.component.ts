@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import {Plugins, Capacitor} from '@capacitor/core';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import {Plugins, Capacitor} from '@capacitor/core';
 export class AppComponent {
   constructor(
     private platform: Platform,
+    private authService:AuthService
   ) {
     this.initializeApp();
   }
@@ -24,6 +26,6 @@ export class AppComponent {
   }
 
   onLogout(){
-    
+    this.authService.logout();
   }
 }
