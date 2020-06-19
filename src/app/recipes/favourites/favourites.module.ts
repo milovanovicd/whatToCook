@@ -9,6 +9,7 @@ import { FavouritesPageRoutingModule } from './favourites-routing.module';
 import { FavouritesPage } from './favourites.page';
 import { FavouritesListComponent } from './favourites-list/favourites-list.component';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
+import { FavouritesService } from './favourites.service';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { MyRecipesComponent } from './my-recipes/my-recipes.component';
     IonicModule,
     FavouritesPageRoutingModule
   ],
-  declarations: [FavouritesPage,FavouritesListComponent,MyRecipesComponent]
+  declarations: [FavouritesPage,FavouritesListComponent,MyRecipesComponent],
+  providers:[FavouritesService]
 })
 export class FavouritesPageModule {}

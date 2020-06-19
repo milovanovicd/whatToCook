@@ -27,47 +27,6 @@ export class AuthPage implements OnInit {
   onSwitchAuthMode(){
     this.isLogin=!this.isLogin;
   }
-
-  // authenticate( email:string,password:string){
-  //   this.isLoading=true;
-  //   this.loadingCtrl.create({
-  //     keyboardClose:true,
-  //     message:'Logging in...'
-  //   }).then(loadingEl => {
-  //     loadingEl.present();
-  //     //Koristimo za postavljanje odgovarajuce observable - signup / login
-  //     let authObs:Observable<{token:string}>;
-      
-  //     //Login ili Signup
-  //     if(this.isLogin){
-  //       // authObs = this.authService.login(email,password);
-  //     }else {
-  //       // authObs = this.authService.signup(email,password);
-  //     }
-
-  //     authObs.subscribe(resData =>{
-  //       console.log(resData);
-  //       //Logika
-  //       this.isLoading = false;
-  //       loadingEl.dismiss();
-  //       this.router.navigateByUrl('/places/tabs/discover');
-  //     }, errRes =>{
-  //         loadingEl.dismiss();
-  //         /*
-  //         const code = errRes.error.error.message;
-  //         let message = 'Could not sign you up, please try again';
-
-  //         if(code === 'EMAIL_EXISTS'){
-  //           message = 'This email exists!';
-  //         }
-
-  //         this.showAlert(message);
-  //         */
-  //     })
-  //   });
-
-  // }
-
   onSubmit(form:NgForm){
     if(!form.valid){
       return;

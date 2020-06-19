@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-item>
+    <!-- <ion-item>
         <ion-label>Select Ingredients:</ion-label>
         <ionic-selectable [(ngModel)]="selected" [items]="recipes" itemValueField="id" itemTextField="title" [isMultiple]="true" #selectComponent>
             <ng-template ionicSelectableCloseButtonTemplate>
@@ -42,7 +42,7 @@
                 </ion-footer>
             </ng-template>
         </ionic-selectable>
-    </ion-item>
+    </ion-item> -->
     <ion-list>
         <ion-item *ngFor="let recipe of searchList">
             <ion-avatar slot="start">

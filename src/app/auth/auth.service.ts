@@ -2,12 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject } from "rxjs";
 
-import { User } from "./user/user.model";
-import { map, tap } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UserService } from './user/user.service';
-import { AuthInterceptor } from './auth-interceptor.service';
 
 @Injectable({
   providedIn: "root",
@@ -49,19 +46,19 @@ export class AuthService {
       this.router.navigate(['/auth']);
   }
 
-  autoLogin() {
-      const token = localStorage.getItem('userToken');
-      console.log('token: ' + token);
-      if (!token) {
-          return;
-      }
-      this.token.next({token});
-  }
+  // autoLogin() {
+  //     const token = localStorage.getItem('userToken');
+  //     console.log('token: ' + token);
+  //     if (!token) {
+  //         return;
+  //     }
+  //     this.token.next({token});
+  // }
 
 
   async userSignedUp(message:string) {
     const alert = await this.alertController.create({
-      header: "New Recipe",
+      header: "Sign Up",
       message: message,
       buttons: ['OK']});
 

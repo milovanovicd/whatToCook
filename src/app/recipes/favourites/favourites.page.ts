@@ -5,6 +5,7 @@ import { Recipe } from '../recipe.model';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UserService } from 'src/app/auth/user/user.service';
+import { FavouritesService } from './favourites.service';
 
 @Component({
   selector: 'app-favourites',
@@ -14,21 +15,19 @@ import { UserService } from 'src/app/auth/user/user.service';
 export class FavouritesPage implements OnInit,OnDestroy {
   segment:'favourites'|'my-recipes' = 'favourites';
   isLoading = false;
-  favouriteRecipes:Recipe[];
   myRecipes:Recipe[];
   recipeSub:Subscription;
+  favSub:Subscription;
 
-  constructor(private recipesService:RecipesService, private userService:UserService) { }
+  constructor(private recipesService:RecipesService, private userService:UserService, private favService:FavouritesService) { }
 
   ngOnInit() {
     this.recipeSub = this.recipesService.recipes.subscribe(recipes =>{
-      this.favouriteRecipes = recipes.filter(r =>{
-        return r.isFavourite ===true;
-      });
       this.myRecipes = recipes.filter(r=>{
         return r.userId === this.userService.userId;
         // return r.userId === this.authService.userId.subscribe();
       })
+
     })
   }
   
@@ -36,12 +35,15 @@ export class FavouritesPage implements OnInit,OnDestroy {
     if(this.recipeSub){
       this.recipeSub.unsubscribe();
     }
+   
   }
 
   ionViewWillEnter(){
     this.isLoading = true;
     this.recipesService.fetchRecipes().subscribe(()=>{
-    this.isLoading = false;
+      this.favService.fetchFavouriteRecipes().subscribe(()=>{
+        this.isLoading = false;
+      })
     });
   }
 

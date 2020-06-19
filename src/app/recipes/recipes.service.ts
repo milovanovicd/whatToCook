@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Recipe } from "./recipe.model";
 import { BehaviorSubject, of } from "rxjs";
-import { take, map, tap, switchMap } from "rxjs/operators";
+import { take, tap, switchMap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-import { UserService } from '../auth/user/user.service';
+import { UserService } from "../auth/user/user.service";
+import { FavouritesService } from "./favourites/favourites.service";
 
 @Injectable({
   providedIn: "root",
@@ -11,9 +12,13 @@ import { UserService } from '../auth/user/user.service';
 export class RecipesService {
   private _recipes = new BehaviorSubject<Recipe[]>([]);
   private _myRecipes = new BehaviorSubject<Recipe[]>([]);
-  private _favouriteRecipes = new BehaviorSubject<Recipe[]>([]);
+  // private _favouriteRecipes = new BehaviorSubject<Recipe[]>([]);
 
-  constructor(private http: HttpClient, private userService:UserService) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private favService: FavouritesService
+  ) {}
 
   //SELECT
   get recipes() {
@@ -28,7 +33,18 @@ export class RecipesService {
     return this.http.get<Recipe[]>("http://localhost:3000/recipes").pipe(
       take(1),
       tap((recipes) => {
-        this._recipes.next(recipes);
+        this.favService.fetchFavouriteRecipes().subscribe(() => {
+          this.favService.favouriteRecipes.subscribe((fav) => {
+            for (let i = 0; i < fav.length; i++) {
+              for (let j = 0; j < recipes.length; j++) {
+                if (fav[i].id === recipes[j].id) {
+                  recipes[j].isFavourite = true;
+                }
+              }
+            }
+            this._recipes.next(recipes);
+          });
+        });
       })
     );
   }
@@ -37,9 +53,9 @@ export class RecipesService {
     return this.http.get<Recipe[]>("http://localhost:3000/recipes").pipe(
       take(1),
       tap((recipes) => {
-        const myRecipes = recipes.filter(r =>{
+        const myRecipes = recipes.filter((r) => {
           return r.userId === this.userService.userId;
-        })
+        });
         this._myRecipes.next(myRecipes);
       })
     );
@@ -47,38 +63,30 @@ export class RecipesService {
 
   getRecipe(recipeId: string) {
     return this.http.get<Recipe>(`http://localhost:3000/recipes/${recipeId}`);
-    // return this.recipes.pipe(
-    //   take(1),
-    //   map((recipes) => {
-    //     return {
-    //       ...recipes.find((r) => {
-    //         return r.id === recipeId;
-    //       }),
-    //     };
-    //   })
-    // );
   }
 
   //REMOVE
   deleteRecipe(recipeId: string) {
     return this.http.delete(`http://localhost:3000/recipes/${recipeId}`).pipe(
-      switchMap(()=>{
+      switchMap(() => {
         return this.recipes;
       }),
       take(1),
-      tap((recipes)=>{
-        this._recipes.next(recipes.filter(r =>{
-          r.id != recipeId;
-        }))
+      tap((recipes) => {
+        this._recipes.next(
+          recipes.filter((r) => {
+            r.id != recipeId;
+          })
+        );
       })
-    )
+    );
   }
 
   // CREATE
   addRecipe(
     title: string,
     description: string,
-    image:string,
+    image: string,
     ingredients: string[],
     cookingTime: number,
     userId: string
@@ -111,10 +119,6 @@ export class RecipesService {
           this._recipes.next(recipes.concat(newRecipe));
         })
       );
-    // return this.recipes.pipe(take(1),tap(recipes=>{
-    //   console.log(newRecipe);
-    //   this._recipes.next(recipes.concat(newRecipe));
-    // }))
   }
 
   //UPDATE
@@ -156,39 +160,6 @@ export class RecipesService {
         });
       }),
       tap(() => {
-        this._recipes.next(updatedRecipes);
-      })
-    );
-  }
-
-  //ADD TO FAVOURITES
-  addToFavourites(recipeId: string) {
-    return this.recipes.pipe(
-      take(1),
-      tap((recipes) => {
-        const favouriteRecipeIndex = recipes.findIndex(
-          (r) => r.id === recipeId
-        );
-        const updatedRecipes = [...recipes];
-        console.log(updatedRecipes[favouriteRecipeIndex]);
-        updatedRecipes[favouriteRecipeIndex].isFavourite = true;
-        console.log(updatedRecipes[favouriteRecipeIndex]);
-        this._recipes.next(updatedRecipes);
-      })
-    );
-  }
-
-  removeFromFavourites(recipeId: string) {
-    return this.recipes.pipe(
-      take(1),
-      tap((recipes) => {
-        const favouriteRecipeIndex = recipes.findIndex(
-          (r) => r.id === recipeId
-        );
-        const updatedRecipes = [...recipes];
-        console.log(updatedRecipes[favouriteRecipeIndex]);
-        updatedRecipes[favouriteRecipeIndex].isFavourite = false;
-        console.log(updatedRecipes[favouriteRecipeIndex]);
         this._recipes.next(updatedRecipes);
       })
     );

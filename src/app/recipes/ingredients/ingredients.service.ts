@@ -8,18 +8,6 @@ import { BehaviorSubject } from "rxjs";
 })
 export class IngredientsService {
   private _ingredients = new BehaviorSubject<string[]>([]);
-  // private _ingredients: string[] = [
-  //   "Bacon",
-  //   "Black Olives",
-  //   "Extra Cheese",
-  //   "Green Peppers",
-  //   "Mushrooms",
-  //   "Onions",
-  //   "Pepperoni",
-  //   "Pineapple",
-  //   "Sausage",
-  //   "Spinach",
-  // ];
 
   constructor(private http: HttpClient) {}
 

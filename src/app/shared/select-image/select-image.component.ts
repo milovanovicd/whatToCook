@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { Platform } from '@ionic/angular';
 import { Capacitor, Camera, CameraResultType, CameraSource } from '@capacitor/core';
 
@@ -16,8 +16,7 @@ export class SelectImageComponent implements OnInit {
 
 
   constructor(
-    private platform: Platform,
-    private sanitizer: DomSanitizer) { }
+    private platform: Platform) { }
 
     ngOnInit() {
       if ((this.platform.is('mobile') && this.platform.is('hybrid')) || this.platform.is('desktop')) {

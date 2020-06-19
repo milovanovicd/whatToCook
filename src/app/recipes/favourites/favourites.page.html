@@ -24,7 +24,8 @@
     <ion-grid fixed>
         <ion-row>
             <ion-col *ngIf="segment==='favourites' && !isLoading" size="12" size-sm="6" offset-sm="3">
-                <app-favourites-list [favouriteRecipes]="favouriteRecipes"></app-favourites-list>
+                <!-- <app-favourites-list [favouriteRecipes]="favouriteRecipes"></app-favourites-list> -->
+                <app-favourites-list [isLoading]="isLoading"></app-favourites-list>
             </ion-col>
             <ion-col *ngIf="segment==='my-recipes' && !isLoading" size="12" size-sm="6" offset-sm="3">
                 <app-my-recipes [myRecipes]="myRecipes"></app-my-recipes>
