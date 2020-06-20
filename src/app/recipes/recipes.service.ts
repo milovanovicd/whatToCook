@@ -12,6 +12,17 @@ import { FavouritesService } from "./favourites/favourites.service";
 export class RecipesService {
   private _recipes = new BehaviorSubject<Recipe[]>([]);
   private _myRecipes = new BehaviorSubject<Recipe[]>([]);
+  private _categories: string[] = [
+    "Breakfast",
+    "Lunch",
+    "Beverages",
+    "Soups",
+    "Salads",
+    "Main dishes",
+    "Desserts",
+    "Freezing",
+    "Breads",
+  ];
   // private _favouriteRecipes = new BehaviorSubject<Recipe[]>([]);
 
   constructor(
@@ -20,15 +31,17 @@ export class RecipesService {
     private favService: FavouritesService
   ) {}
 
-  //SELECT
   get recipes() {
     return this._recipes.asObservable();
   }
-
+  get categories(){
+    return this._categories;
+  }
   get myRecipes() {
     return this._myRecipes.asObservable();
   }
 
+  //SELECT
   fetchRecipes() {
     return this.http.get<Recipe[]>("http://localhost:3000/recipes").pipe(
       take(1),
@@ -73,11 +86,15 @@ export class RecipesService {
       }),
       take(1),
       tap((recipes) => {
-        this._recipes.next(
-          recipes.filter((r) => {
-            r.id != recipeId;
-          })
-        );
+        this.favService
+          .removeFromFavouritesByRecipeId(recipeId)
+          .subscribe(() => {
+            this._recipes.next(
+              recipes.filter((r) => {
+                r.id != recipeId;
+              })
+            );
+          });
       })
     );
   }
@@ -89,7 +106,8 @@ export class RecipesService {
     image: string,
     ingredients: string[],
     cookingTime: number,
-    userId: string
+    userId: string,
+    category: string
   ) {
     console.log(image);
     let generatedId: string; // Bitno je zbog scope-inga da devinišemo ovde kao promenljivu
@@ -101,7 +119,8 @@ export class RecipesService {
       image,
       ingredients,
       cookingTime,
-      false
+      false,
+      category
     );
     return this.http
       .post<{ id: string }>("http://localhost:3000/recipes", {
@@ -127,7 +146,8 @@ export class RecipesService {
     title: string,
     description: string,
     ingredients: string[],
-    cookingTime: number
+    cookingTime: number,
+    category:string
   ) {
     let updatedRecipes: Recipe[];
     return this.recipes.pipe(
@@ -151,7 +171,8 @@ export class RecipesService {
           oldRecipe.imageUrl,
           ingredients,
           cookingTime,
-          oldRecipe.isFavourite
+          oldRecipe.isFavourite,
+          category
         );
 
         return this.http.patch(`http://localhost:3000/recipes/${recipeId}`, {

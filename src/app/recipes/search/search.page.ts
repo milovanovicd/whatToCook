@@ -3,6 +3,9 @@ import { Recipe } from '../recipe.model';
 import { RecipesService } from '../recipes.service';
 import { Subscription } from 'rxjs';
 import { IonicSelectableComponent } from 'ionic-selectable';
+import { IngredientsService } from '../ingredients/ingredients.service';
+import { ModalController } from '@ionic/angular';
+import { FilterComponent } from './filter/filter.component';
 
 @Component({
   selector: 'app-search',
@@ -13,11 +16,9 @@ export class SearchPage implements OnInit,OnDestroy {
   recipes:Recipe[];
   recipesSub:Subscription;
   searchList:Recipe[];
-  selected = [];
-  toggle = true;
-  @ViewChild('selectComponent',{ static: true }) selectComponent:IonicSelectableComponent;
+  isLoading= false;
 
-  constructor(private recipesService:RecipesService) { }
+  constructor(private recipesService:RecipesService,private ingredientsService:IngredientsService, private modalCtrl:ModalController ) { }
 
   ngOnInit() {
     this.recipesSub = this.recipesService.recipes.subscribe(recipes=> {
@@ -26,26 +27,19 @@ export class SearchPage implements OnInit,OnDestroy {
     });
   }
 
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.recipesService.fetchRecipes().subscribe(()=>{
+      this.ingredientsService.fetchIngredients().subscribe(() => {
+        this.isLoading = false;
+      });
+    })
+  }
+
   ngOnDestroy(){
     if(this.recipesSub){
       this.recipesSub.unsubscribe();
     }
-  }
-
-  onClear(){
-    this.selectComponent.clear();
-    this.selectComponent.close();
-  }
-  
-  onToggleItems(){
-    this.selectComponent.toggleItems(this.toggle);
-    this.toggle=!this.toggle;
-  }
-  
-  onConfirm(){
-    this.selectComponent.confirm();
-    console.log(this.selectComponent.itemsToConfirm);
-    this.selectComponent.close();
   }
 
   initSearchList(){
@@ -64,5 +58,23 @@ export class SearchPage implements OnInit,OnDestroy {
 }
   }
 
+  onFilters(){
+    this.modalCtrl.create({
+      component: FilterComponent,
+      componentProps:{searchList:this.searchList}
+    }).then(modalEl=>{
+      modalEl.present();
+      return modalEl.onDidDismiss();
+    }).then(resultData =>{
+      if(resultData.role==="applied"){
+        console.log(resultData.data.searchList);
+        this.searchList = resultData.data.searchList;
+      }
+    })
+  }
+
+  onFiltersDismiss(){
+    this.searchList = this.recipes;
+  }
   
 }

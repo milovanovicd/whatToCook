@@ -15,14 +15,14 @@
                             <ion-input type="email" ngModel name="email" #emailCtrl="ngModel" required email></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
-                            <ion-label>Should be a valid email address.</ion-label>
+                            <ion-label color="danger">Should be a valid email address.</ion-label>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">Password</ion-label>
                             <ion-input type="password" ngModel name="password" #passwordCtrl="ngModel" required minlength="6"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!passwordCtrl.valid && passwordCtrl.touched" lines="none">
-                            <ion-label>Should at least be 6 characters long.</ion-label>
+                            <ion-label color="danger">Should at least be 6 characters long.</ion-label>
                         </ion-item>
                     </ion-list>
                 </ion-col>

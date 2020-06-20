@@ -30,12 +30,16 @@ export class RecipeItemComponent implements OnInit,OnDestroy {
   removeFromFavourites(recipeId:string){
     // this.unfavSub = this.recipeService.removeFromFavourites(recipeId).subscribe();
     const userId = this.userService.userId;
-    this.favService.removeFromFavourites(userId,recipeId).subscribe();
+    this.favService.removeFromFavourites(userId,recipeId).subscribe(()=>{
+      this.recipeService.fetchRecipes().subscribe();
+    });
   }
 
   addToFavourites(recipeId:string){
     // this.favSub = this.recipeService.addToFavourites(recipeId).subscribe();
     const userId = this.userService.userId;
-    this.favService.addToFavourites(userId,recipeId).subscribe();
+    this.favService.addToFavourites(userId,recipeId).subscribe(()=>{
+      this.recipeService.fetchRecipes().subscribe();
+    });
   }
 }

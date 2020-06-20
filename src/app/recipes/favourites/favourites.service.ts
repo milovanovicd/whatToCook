@@ -40,4 +40,9 @@ export class FavouritesService {
     return this.http
     .post("http://localhost:3000/favourites/remove",{userId,recipeId});
   }
+
+  removeFromFavouritesByRecipeId(recipeId: string) {
+    return this.http
+    .post("http://localhost:3000/favourites/remove-by-recipe/",{recipeId});
+  }
 }

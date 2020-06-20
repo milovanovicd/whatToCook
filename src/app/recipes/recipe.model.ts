@@ -7,6 +7,7 @@ export class Recipe {
         public imageUrl:string,
         public ingredients:string[],
         public cookingTime:number,
-        public isFavourite:boolean
+        public isFavourite:boolean,
+        public category:string
     ){}
 }

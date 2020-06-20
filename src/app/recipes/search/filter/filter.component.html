@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="primary">
+            <ion-button (click)="onDismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Filters</ion-title>
+    </ion-toolbar>
+
+</ion-header>
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12" size-md="6" offset-md="3">
+                <form #f="ngForm" (ngSubmit)="onApplyFilters(f)">
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label>Ingredients</ion-label>
+                                <ion-select multiple="true" name="ingredients" cancelText="Cancel" okText="Okay!" ngModel>
+                                    <ion-select-option *ngFor="let ing of ingredients" [value]="ing">{{ing}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label>Categories</ion-label>
+                                <ion-select multiple="true" name="categories" cancelText="Cancel" okText="Okay!" ngModel>
+                                    <ion-select-option *ngFor="let c of categories" [value]="c">{{c}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12" size-md="6" offset-sm="3" class="ion-padding">
+                            <ion-button type="submit" color="success" expand="block" fill="solid" [disabled]="!f.valid">
+                                Primeni filter
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                </form>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

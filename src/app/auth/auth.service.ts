@@ -29,6 +29,8 @@ export class AuthService {
             localStorage.setItem('userToken', podaci.token);
             this.userService.setUserId(podaci.userId);
             this.router.navigate(['/']);
+        },error =>{
+          this.authAlert("Invalid email or password! Please try again","Invalid Login");
         });
   }
 
@@ -36,7 +38,7 @@ export class AuthService {
     email = email.trim();
     return this.http.post<{message: string}>('http://localhost:3000/users/signup', {email, password})
     .subscribe(res =>{
-      this.userSignedUp(res.message);
+      this.authAlert(res.message,"Sign up");
     });
   }
 
@@ -56,9 +58,9 @@ export class AuthService {
   // }
 
 
-  async userSignedUp(message:string) {
+  async authAlert(message:string, header:string) {
     const alert = await this.alertController.create({
-      header: "Sign Up",
+      header: header,
       message: message,
       buttons: ['OK']});
 

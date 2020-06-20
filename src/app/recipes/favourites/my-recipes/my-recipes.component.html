@@ -1,6 +1,17 @@
 <ion-grid fixed>
-    <ion-row>
-        <ion-col size="12" *ngIf="!isLoading">
+    <ion-row *ngIf="isLoading">
+        <ion-col size="12" size-sm="6" offset-sm="3" class="ion-text-center">
+            <ion-spinner color="primary" name="bubbles"></ion-spinner>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isLoading && myRecipes.length<=0">
+        <ion-col size="12" size-sm="6" offset-sm="3" class="ion-text-center">
+            <p>You don't have any recipes yet. Add one!</p>
+            <ion-button color="success" routerLink='/recipes/tabs/favourites/new'>Add New Recipe</ion-button>
+        </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isLoading">
+        <ion-col size="12">
             <ion-list>
                 <ion-item-sliding *ngFor="let r of myRecipes" #slidingItem>
                     <ion-item-options side="start">

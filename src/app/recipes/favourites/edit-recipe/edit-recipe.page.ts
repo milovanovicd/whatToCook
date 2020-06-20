@@ -19,6 +19,7 @@ export class EditRecipePage implements OnInit, OnDestroy {
   private ingSub: Subscription;
   ingredients:string[];
   isLoading = false;
+  categories:string[];
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,7 @@ export class EditRecipePage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack("/recipes/tabs/favourites");
         return;
       }
+      this.categories= this.recipeService.categories;
       this.isLoading = true;
       this.ingSub = this.ingredientsService.ingredients.subscribe(i =>{
         this.ingredients = i;
@@ -56,6 +58,9 @@ export class EditRecipePage implements OnInit, OnDestroy {
               validators: [Validators.required],
             }),
             ingredients: new FormControl(this.recipe.ingredients, {
+              validators: [Validators.required],
+            }),
+            category: new FormControl(this.recipe.category, {
               validators: [Validators.required],
             }),
             cookingTime: new FormControl(this.recipe.cookingTime, {
@@ -107,7 +112,7 @@ export class EditRecipePage implements OnInit, OnDestroy {
       message:'Updating recipe...'
     }).then(loadingEl =>{
       loadingEl.present();
-      this.recipeService.updateRecipe(this.recipe.id,this.form.value.title,this.form.value.description,this.form.value.ingredients,this.form.value.cookingTime)
+      this.recipeService.updateRecipe(this.recipe.id,this.form.value.title,this.form.value.description,this.form.value.ingredients,this.form.value.cookingTime,this.form.value.category)
     .subscribe(()=>{
       this.loadingCtrl.dismiss();
       this.router.navigate(["/", "recipes", "tabs", "favourites"]);

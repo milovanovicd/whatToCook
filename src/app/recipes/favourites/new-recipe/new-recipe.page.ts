@@ -45,6 +45,7 @@ export class NewRecipePage implements OnInit, OnDestroy {
   ingredients: string[];
   private ingSub: Subscription;
   isLoading = false;
+  categories: string[];
 
   constructor(
     private recipesService: RecipesService,
@@ -67,13 +68,16 @@ export class NewRecipePage implements OnInit, OnDestroy {
       ingredients: new FormControl(null, {
         validators: [Validators.required]
       }),
+      category: new FormControl(null, {
+        validators: [Validators.required]
+      }),
       cookingTime: new FormControl(null, {
         updateOn: "blur",
         validators: [Validators.required, Validators.min(1)]
       }),
       image: new FormControl(null, {validators: [Validators.required]})
     });
-
+    this.categories = this.recipesService.categories;
     this.ingSub = this.ingredientsService.ingredients.subscribe((i) => {
       this.ingredients = i;
       console.log(this.ingredients);
@@ -115,6 +119,7 @@ export class NewRecipePage implements OnInit, OnDestroy {
 
     await alert.present();
   }
+  
   onAddNewRecipe() {
     console.log(this.form);
     const title = this.form.value.title;
@@ -124,8 +129,9 @@ export class NewRecipePage implements OnInit, OnDestroy {
     // const image = "https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg";
     const cookingTime = this.form.value.cookingTime;
     const userId = this.userService.userId;
+    const category = this.form.value.category;
     this.recipesService
-      .addRecipe(title, description, image, ingredients, cookingTime, userId)
+      .addRecipe(title, description, image, ingredients, cookingTime, userId,category)
       .subscribe(() => {
         this.recipeCreatedAlert();
       });
@@ -148,7 +154,6 @@ export class NewRecipePage implements OnInit, OnDestroy {
     //   imageFile = imageData;
     // }
     this.form.value.image = imageData;
-    console.log(this.form);
 
     this.form.patchValue({image:imageData});
   }

@@ -31,8 +31,8 @@ export class SelectImageComponent implements OnInit {
     }
 
     const image = await Camera.getPhoto({
-      quality: 100,
-      width: 400,
+      quality: 90,
+      width:600,
       correctOrientation: true,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
