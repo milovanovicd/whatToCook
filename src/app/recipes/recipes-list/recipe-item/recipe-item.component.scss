@@ -2,3 +2,12 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+div.category-label {
+    position: absolute;
+    top: 0;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: var(--ion-color-danger-tint);
+}

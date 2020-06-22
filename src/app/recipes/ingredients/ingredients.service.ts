@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { take, tap } from "rxjs/operators";
 import { BehaviorSubject } from "rxjs";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +17,7 @@ export class IngredientsService {
   }
 
   fetchIngredients() {
-    return this.http.get<string[]>("http://localhost:3000/ingredients/").pipe(
+    return this.http.get<string[]>(`${environment.API_URL}/ingredients/`).pipe(
       take(1),
       tap((ingredients) => {
         this._ingredients.next(ingredients);

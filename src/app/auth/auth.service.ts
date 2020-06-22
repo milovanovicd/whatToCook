@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs";
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UserService } from './user/user.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -23,7 +24,7 @@ export class AuthService {
   //email
   login(email: string, password: string) {
     const username = email.trim();
-    this.http.post<{token: string, userId:string}>('http://localhost:3000/auth/login', {username, password})
+    this.http.post<{token: string, userId:string}>(`${environment.API_URL}/auth/login`, {username, password})
         .subscribe(podaci => {
             this.token.next(podaci);
             localStorage.setItem('userToken', podaci.token);
@@ -36,7 +37,7 @@ export class AuthService {
 
   signup(email: string, password: string) {
     email = email.trim();
-    return this.http.post<{message: string}>('http://localhost:3000/users/signup', {email, password})
+    return this.http.post<{message: string}>(`${environment.API_URL}/users/signup`, {email, password})
     .subscribe(res =>{
       this.authAlert(res.message,"Sign up");
     });

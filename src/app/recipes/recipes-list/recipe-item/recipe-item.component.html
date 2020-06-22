@@ -1,5 +1,8 @@
-<ion-card>
+<ion-card class="p-relative">
     <ion-img [src]="recipe.imageUrl"></ion-img>
+    <div class="category-label ion-padding">
+        <ion-label>{{recipe.category}}</ion-label>
+    </div>
     <ion-card-header class="ion-text-center">
         <ion-card-title>{{recipe.title}}</ion-card-title>
         <div class="recipe-details ion-padding">

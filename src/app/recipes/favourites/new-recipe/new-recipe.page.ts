@@ -5,12 +5,12 @@ import {
   OnDestroy,
   ElementRef,
 } from "@angular/core";
-import {FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { RecipesService } from "../../recipes.service";
 import { IngredientsService } from "../../ingredients/ingredients.service";
 import { AlertController, NavController, Platform } from "@ionic/angular";
 import { Subscription } from "rxjs";
-import { UserService } from 'src/app/auth/user/user.service';
+import { UserService } from "src/app/auth/user/user.service";
 
 //Funkcija za konvertovanje stringa u fajl
 function base64toBlob(base64Data, contentType) {
@@ -59,23 +59,23 @@ export class NewRecipePage implements OnInit, OnDestroy {
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: "blur",
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       description: new FormControl(null, {
         updateOn: "blur",
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       ingredients: new FormControl(null, {
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       category: new FormControl(null, {
-        validators: [Validators.required]
+        validators: [Validators.required],
       }),
       cookingTime: new FormControl(null, {
         updateOn: "blur",
-        validators: [Validators.required, Validators.min(1)]
+        validators: [Validators.required, Validators.min(1)],
       }),
-      image: new FormControl(null, {validators: [Validators.required]})
+      image: new FormControl(null, { validators: [Validators.required] }),
     });
     this.categories = this.recipesService.categories;
     this.ingSub = this.ingredientsService.ingredients.subscribe((i) => {
@@ -100,17 +100,12 @@ export class NewRecipePage implements OnInit, OnDestroy {
   async recipeCreatedAlert() {
     const alert = await this.alertController.create({
       header: "New Recipe",
-      message: "Recipe created successfully. Do you want to add more?",
+      message: "Recipe created successfully!",
       buttons: [
         {
-          text: "Yes",
+          text: "Ok",
           handler: () => {
             this.form.reset();
-          },
-        },
-        {
-          text: "No",
-          handler: () => {
             this.navCtrl.navigateBack("/recipes/tabs/favourites");
           },
         },
@@ -119,7 +114,7 @@ export class NewRecipePage implements OnInit, OnDestroy {
 
     await alert.present();
   }
-  
+
   onAddNewRecipe() {
     console.log(this.form);
     const title = this.form.value.title;
@@ -131,7 +126,15 @@ export class NewRecipePage implements OnInit, OnDestroy {
     const userId = this.userService.userId;
     const category = this.form.value.category;
     this.recipesService
-      .addRecipe(title, description, image, ingredients, cookingTime, userId,category)
+      .addRecipe(
+        title,
+        description,
+        image,
+        ingredients,
+        cookingTime,
+        userId,
+        category
+      )
       .subscribe(() => {
         this.recipeCreatedAlert();
       });
@@ -155,6 +158,6 @@ export class NewRecipePage implements OnInit, OnDestroy {
     // }
     this.form.value.image = imageData;
 
-    this.form.patchValue({image:imageData});
+    this.form.patchValue({ image: imageData });
   }
 }

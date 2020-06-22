@@ -13,8 +13,11 @@
     </div>
     <ion-grid *ngIf="!isLoading" fixed class="ion-no-padding ion-text-center">
         <ion-row>
-            <ion-col size="12" size-sm="6" offset-sm="3">
+            <ion-col size="12">
                 <ion-img [src]="recipe.imageUrl"></ion-img>
+                <div class="category-label ion-padding">
+                    <ion-label>{{recipe.category}}</ion-label>
+                </div>
             </ion-col>
         </ion-row>
         <ion-row class="ion-padding">

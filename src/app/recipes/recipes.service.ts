@@ -5,6 +5,7 @@ import { take, tap, switchMap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { UserService } from "../auth/user/user.service";
 import { FavouritesService } from "./favourites/favourites.service";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -23,8 +24,7 @@ export class RecipesService {
     "Freezing",
     "Breads",
   ];
-  // private _favouriteRecipes = new BehaviorSubject<Recipe[]>([]);
-
+  
   constructor(
     private http: HttpClient,
     private userService: UserService,
@@ -43,7 +43,7 @@ export class RecipesService {
 
   //SELECT
   fetchRecipes() {
-    return this.http.get<Recipe[]>("http://localhost:3000/recipes").pipe(
+    return this.http.get<Recipe[]>(`${environment.API_URL}/recipes`).pipe(
       take(1),
       tap((recipes) => {
         this.favService.fetchFavouriteRecipes().subscribe(() => {
@@ -63,7 +63,7 @@ export class RecipesService {
   }
 
   fetchMyRecipes() {
-    return this.http.get<Recipe[]>("http://localhost:3000/recipes").pipe(
+    return this.http.get<Recipe[]>(`${environment.API_URL}/recipes`).pipe(
       take(1),
       tap((recipes) => {
         const myRecipes = recipes.filter((r) => {
@@ -75,12 +75,12 @@ export class RecipesService {
   }
 
   getRecipe(recipeId: string) {
-    return this.http.get<Recipe>(`http://localhost:3000/recipes/${recipeId}`);
+    return this.http.get<Recipe>(`${environment.API_URL}/recipes/${recipeId}`);
   }
 
   //REMOVE
   deleteRecipe(recipeId: string) {
-    return this.http.delete(`http://localhost:3000/recipes/${recipeId}`).pipe(
+    return this.http.delete(`${environment.API_URL}/recipes/${recipeId}`).pipe(
       switchMap(() => {
         return this.recipes;
       }),
@@ -123,7 +123,7 @@ export class RecipesService {
       category
     );
     return this.http
-      .post<{ id: string }>("http://localhost:3000/recipes", {
+      .post<{ id: string }>(`${environment.API_URL}/recipes`, {
         ...newRecipe,
         id: null,
       })
@@ -175,7 +175,7 @@ export class RecipesService {
           category
         );
 
-        return this.http.patch(`http://localhost:3000/recipes/${recipeId}`, {
+        return this.http.patch(`${environment.API_URL}/recipes/${recipeId}`, {
           ...updatedRecipes[updatedRecipeIndex],
           id: null,
         });

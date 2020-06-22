@@ -52,9 +52,13 @@ export class MyRecipesComponent implements OnInit {
               .then((loadingEl) => {
                 loadingEl.present();
                 this.recipesService.deleteRecipe(recipeId).subscribe(() => {
-                  loadingEl.dismiss();
-                  this.isLoading = false;
-                  this.recipesService.fetchRecipes().subscribe();
+                  this.recipesService.fetchMyRecipes().subscribe(()=>{
+                    this.recipesService.myRecipes.subscribe(myrecipes=>{
+                      this.myRecipes = myrecipes;
+                      loadingEl.dismiss();
+                      this.isLoading = false;
+                    })
+                  });
                 });
               });
           },

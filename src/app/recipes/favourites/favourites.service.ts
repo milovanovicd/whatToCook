@@ -4,6 +4,7 @@ import { Recipe } from "../recipe.model";
 import { HttpClient } from "@angular/common/http";
 import { UserService } from "src/app/auth/user/user.service";
 import { take, tap } from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -20,7 +21,7 @@ export class FavouritesService {
   fetchFavouriteRecipes() {
     return this.http
       .get<Recipe[]>(
-        "http://localhost:3000/favourites/" + this.userService.userId
+        `${environment.API_URL}/favourites/${this.userService.userId}`
       )
       .pipe(
         take(1),
@@ -33,16 +34,16 @@ export class FavouritesService {
 
   addToFavourites(userId: string, recipeId: string) {
     return this.http
-    .post("http://localhost:3000/favourites/",{userId,recipeId});
+    .post(`${environment.API_URL}/favourites/`,{userId,recipeId});
   }
 
   removeFromFavourites(userId: string, recipeId: string) {
     return this.http
-    .post("http://localhost:3000/favourites/remove",{userId,recipeId});
+    .post(`${environment.API_URL}/favourites/remove`,{userId,recipeId});
   }
 
   removeFromFavouritesByRecipeId(recipeId: string) {
     return this.http
-    .post("http://localhost:3000/favourites/remove-by-recipe/",{recipeId});
+    .post(`${environment.API_URL}/favourites/remove-by-recipe/`,{recipeId});
   }
 }
